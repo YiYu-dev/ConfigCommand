@@ -8,8 +8,8 @@ $ResourceBaseNm = "$ResourceDefaultNm-$Id"
 $ResourceBaseNmhyphen = "$ResourceDefaultNmhyphen-$Id"
 $RgNm = "$ResourceBaseNm-rg"
 $RgCommonNm = "$ResourceDefaultNm-rg"
-$FunctionSANm = "jprbswakany${Id}fs02"
-$PublicSANm = "jprbswakany${Id}as02"
+$FunctionSANm = "jprbswakany${Id}fs01"
+$PublicSANm = "jprbswakany${Id}as01"
 $PublicSAURL = "https://$PublicSANm.z11.web.core.windows.net"
 $SQLSrv = "$ResourceBaseNmhyphen-sql01"
 $SQLDb = "$ResourceBaseNmhyphen-sqldb01"
@@ -36,14 +36,14 @@ $KeyVaultGraphSecretValue = "null"
 $OperationUser = (az account show | convertfrom-json).user.name
 $OperationUser
 $AppPlan = "$ResourceDefaultNmhyphen-$Id-asp01"
-$Wa = "$ResourceDefaultNmhyphen-$Id-wa02"
-$WaAR = "$ResourceDefaultNmhyphen-$Id-arwa02"
-$Fa = "$ResourceDefaultNmhyphen-$Id-fa02"
-$FaAR = "$ResourceDefaultNmhyphen-$Id-arfa02"
+$Wa = "$ResourceDefaultNmhyphen-$Id-wa01"
+$WaAR = "$ResourceDefaultNmhyphen-$Id-arwa01"
+$Fa = "$ResourceDefaultNmhyphen-$Id-fa01"
+$FaAR = "$ResourceDefaultNmhyphen-$Id-arfa01"
 $RaURL = "https://www.rbsdevtest2.com"
 $CustomerTenant = "97cd0e82-f22b-45c0-bd8e-47f2ce63d9a5"
 $CustomerAppId = "<顧客テナントに登録した AppId>"
-$RATenantId = "https://robinsons.co.jp"
+$RATenantId = "https://robinson2025b.onmicrosoft.com"
 $appConfigName = "$ResourceDefaultNmhyphen-appConfig2"
 $N = 32; $Chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; $CsvSecret = -join ((1..$N) | % { Get-Random -InputObject $Chars.ToCharArray() })
 Write-Output "Generated Csv Secret: $CsvSecret"
@@ -290,29 +290,12 @@ az webapp auth update --name $Wa `
   --resource-group $RgNm `
   --set login.routes.logoutEndpoint="/.auth/logout"
 $WaARAppId = (az ad app list --display-name $WaAR | ConvertFrom-Json)[0].appId
-$WaAuthSettingsId = "/subscriptions/$SubscriptionId/resourceGroups/$RgNm/providers/Microsoft.Web/sites/$Fa/config/authsettingsV2"
-$properties = @"
-{
-  "identityProviders": {
-    "azureActiveDirectory": {
-      "registration": {
-        "clientAppId": "$FaARAppId"
-      },
-      "validation": {
-        "defaultAuthorizationPolicy": {
-          "allowedApplications": [
-            "$FaARAppId",
-            "$CustomerAppId"
-          ]
-        }
-      }
-    }
-  }
-}
-"@
+$WaAuthSettingsId = "/subscriptions/$SubscriptionId/resourceGroups/$RgNm/providers/Microsoft.Web/sites/$Wa/config/authsettingsV2"
 az resource update `
   --ids $WaAuthSettingsId `
-  --properties $properties
+  --set properties.identityProviders.azureActiveDirectory.registration.clientAppId=$WaARAppId `
+        properties.identityProviders.azureActiveDirectory.validation.defaultAuthorizationPolicy.allowedApplications[0]=$WaARAppId `
+        properties.identityProviders.azureActiveDirectory.validation.defaultAuthorizationPolicy.allowedApplications[1]=$CustomerAppId
 $result = az webapp config set --resource-group $RgNm `
   --name $Wa `
   --use-32bit-worker-process false `
@@ -592,30 +575,12 @@ az webapp auth update --name $Fa `
   --resource-group $RgNm `
   --set login.routes.logoutEndpoint="/.auth/logout"
 $FaARAppId = (az ad app list --display-name $FaAR | ConvertFrom-Json)[0].appId
-
 $FaAuthSettingsId = "/subscriptions/$SubscriptionId/resourceGroups/$RgNm/providers/Microsoft.Web/sites/$Fa/config/authsettingsV2"
-$properties = @"
-{
-  "identityProviders": {
-    "azureActiveDirectory": {
-      "registration": {
-        "clientAppId": "$FaARAppId"
-      },
-      "validation": {
-        "defaultAuthorizationPolicy": {
-          "allowedApplications": [
-            "$FaARAppId",
-            "$CustomerAppId"
-          ]
-        }
-      }
-    }
-  }
-}
-"@
 az resource update `
   --ids $FaAuthSettingsId `
-  --properties $properties
+  --set properties.identityProviders.azureActiveDirectory.registration.clientAppId=$FaARAppId `
+        properties.identityProviders.azureActiveDirectory.validation.defaultAuthorizationPolicy.allowedApplications[0]=$FaARAppId `
+        properties.identityProviders.azureActiveDirectory.validation.defaultAuthorizationPolicy.allowedApplications[1]=$CustomerAppId
 az functionapp cors add --name $Fa `
   --resource-group $RgNm `
   --allowed-origins "https://portal.azure.com" "https://localhost:3000" "http://localhost:3000" "$PublicSAURL"

@@ -1034,3 +1034,43 @@ $result=az role assignment create `
   --assignee-object-id $FaSystemId --assignee-principal-type ServicePrincipal `
   --scope $AppConfigCommonScope
 ($result | ConvertFrom-Json).createdOn
+az monitor diagnostic-settings create `
+  --name $WaDiag `
+  --resource $(az webapp show --name $Wa --resource-group $RgNm --query id -o tsv) `
+  --workspace $workspaceid `
+  --logs '[{"category":"AppServiceHTTPLogs","enabled":true},{"category":"AppServiceConsoleLogs","enabled":true},{"category":"AppServiceAppLogs","enabled":true},{"category":"AppServiceAuditLogs","enabled":true},{"category":"AppServiceIPSecAuditLogs","enabled":true},{"category":"AppServicePlatformLogs","enabled":true},{"category":"AppServiceAuthenticationLogs","enabled":true},{"category":"AppServiceAntivirusScanAuditLogs","enabled":true}' `
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+az monitor diagnostic-settings create `
+  --name $FaDiag `
+  --resource $(az webapp show --name $Fa --resource-group $RgNm --query id -o tsv) `
+  --workspace $workspaceid `
+  --logs '[{"category":"FunctionAppLogs","enabled":true},{"category":"AppServiceAuthenticationLogs","enabled":true}]' `
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+az monitor diagnostic-settings create `
+  --name $AppPlanDiag `
+  --resource $(az appservice plan show --name $AppPlan --resource-group $RgNm --query id -o tsv) `
+  --workspace $workspaceid `
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+az monitor diagnostic-settings create `
+  --name $KeyVaultNmDiag `
+  --resource $(az keyvault show --name $KeyVaultNm --resource-group $RgNm --query id -o tsv) `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"audit","enabled":true},{"categoryGroup":"allLogs","enabled":true}]' `
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+az monitor diagnostic-settings create `
+  --name $agwNmDiag `
+  --resource $(az network application-gateway show -g $RgCommonNm -n $agwNm --query id -o tsv) `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' `
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+az monitor diagnostic-settings create `
+  --name $SQLDbDiag `
+  --resource $(az sql db show -g $RgNm -n $SQLDb --server $SQLSrv --query id -o tsv) `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"allLogs","enabled":true},{"categoryGroup":"audit","enabled":true}]' `
+  --metrics '[{"category":"Basic","enabled":true},{"category":"InstanceAndAppAdvanced","enabled":true},{"category":"WorkloadManagement","enabled":true}]'
+az monitor diagnostic-settings create `
+  --name $FunctionSADiag `
+  --resource $(az storage account show -g $RgNm -n $FunctionSANm --query id -o tsv) `
+  --workspace $workspaceid `
+  --metrics '[{"category":"Transaction","enabled":true}]'

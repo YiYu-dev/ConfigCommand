@@ -1,0 +1,41 @@
+name: Run PowerShell Script
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: windows-latest
+    env:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Run PowerShell script
+      shell: pwsh
+      run: |
+        try {
+          $creds = $env:AZURE_CREDENTIALS | ConvertFrom-Json
+          
+          $AppId = $creds.clientId
+          $ClientSecret = $creds.clientSecret
+          $TenantId = $creds.tenantId
+          
+          az login --service-principal `
+            --username "$AppId" `
+            --password "$ClientSecret" `
+            --tenant "$TenantId"
+          
+          $securePassword = ConvertTo-SecureString $ClientSecret -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential ($AppId, $securePassword)
+          Connect-AzAccount -ServicePrincipal -Credential $cred -Tenant $TenantId
+          
+          ./script_output.ps1
+        
+        }
+          catch {
+            Write-Error "Script execution failed: $_"
+            exit 1
+        }

@@ -1,7 +1,7 @@
 $location = "japan east"
 $SubscriptionId = (az account show | convertfrom-json).id
 $tenantId = (az account show | convertfrom-json).tenantid
-$Id = "005"
+$Id = "006"
 $ResourceDefaultNm = "jp.rbs.wak-any"
 $ResourceDefaultNmhyphen = "jp-rbs-wak-any"
 $ResourceBaseNm = "$ResourceDefaultNm-$Id"

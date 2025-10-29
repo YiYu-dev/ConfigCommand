@@ -1038,7 +1038,7 @@ az monitor diagnostic-settings create `
   --name $WaDiag `
   --resource $(az webapp show --name $Wa --resource-group $RgNm --query id -o tsv) `
   --workspace $workspaceid `
-  --logs '[{"category":"AppServiceHTTPLogs","enabled":true},{"category":"AppServiceConsoleLogs","enabled":true},{"category":"AppServiceAppLogs","enabled":true},{"category":"AppServiceAuditLogs","enabled":true},{"category":"AppServiceIPSecAuditLogs","enabled":true},{"category":"AppServicePlatformLogs","enabled":true},{"category":"AppServiceAuthenticationLogs","enabled":true},{"category":"AppServiceAntivirusScanAuditLogs","enabled":true}' `
+  --logs '[{"category":"AppServiceHTTPLogs","enabled":true},{"category":"AppServiceConsoleLogs","enabled":true},{"category":"AppServiceAppLogs","enabled":true},{"category":"AppServiceAuditLogs","enabled":true},{"category":"AppServiceIPSecAuditLogs","enabled":true},{"category":"AppServicePlatformLogs","enabled":true}]' `
   --metrics '[{"category":"AllMetrics","enabled":true}]'
 az monitor diagnostic-settings create `
   --name $FaDiag `

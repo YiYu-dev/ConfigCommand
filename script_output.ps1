@@ -1,7 +1,7 @@
 $location = "japan east"
 $SubscriptionId = (az account show | convertfrom-json).id
 $tenantId = (az account show | convertfrom-json).tenantid
-$Id = "004"
+$Id = "005"
 $ResourceDefaultNm = "jp.rbs.wak-any"
 $ResourceDefaultNmhyphen = "jp-rbs-wak-any"
 $ResourceBaseNm = "$ResourceDefaultNm-$Id"
@@ -1038,7 +1038,7 @@ az monitor diagnostic-settings create `
   --name $WaDiag `
   --resource $(az webapp show --name $Wa --resource-group $RgNm --query id -o tsv) `
   --workspace $workspaceid `
-  --logs '[{"category":"AppServiceHTTPLogs","enabled":true},{"category":"AppServiceConsoleLogs","enabled":true},{"category":"AppServiceAppLogs","enabled":true},{"category":"AppServiceAuditLogs","enabled":true},{"category":"AppServiceIPSecAuditLogs","enabled":true},{"category":"AppServicePlatformLogs","enabled":true},{"category":"AppServiceAuthenticationLogs","enabled":true}]' `
+  --logs '[{"category":"AppServiceHTTPLogs","enabled":true},{"category":"AppServiceConsoleLogs","enabled":true},{"category":"AppServiceAppLogs","enabled":true},{"category":"AppServiceAuditLogs","enabled":true},{"category":"AppServiceIPSecAuditLogs","enabled":true},{"category":"AppServicePlatformLogs","enabled":true},{"category":"AppServiceAuthenticationLogs","enabled":true},{"category":"AppServiceAntivirusScanAuditLogs","enabled":true},{"category":"AppServiceFileAuditLogs","enabled":true}]' `
   --metrics '[{"category":"AllMetrics","enabled":true}]'
 az monitor diagnostic-settings create `
   --name $FaDiag `

@@ -1069,26 +1069,27 @@ az monitor diagnostic-settings create `
   --workspace $workspaceid `
   --metrics '[{"category":"Transaction","enabled":true}]'
 az monitor diagnostic-settings create `
-  --name $FunctionSAblobDiag `
-  --resource ""$(az storage account show -g $RgNm -n $FunctionSANm --query ""id"" -o tsv)/blobServices/default"" `
-  --workspace $workspaceid `
-  --logs '[{""category"":""StorageRead"",""enabled"":true},{""category"":""StorageWrite"",""enabled"":true},{""category"":""StorageDelete"",""enabled"":true}]' `
-  --metrics '[{""category"":""Transaction"",""enabled"":true}]'
+  --name $FunctionSAblobDiag `
+  --resource "$(az storage account show -g $RgNm -n $FunctionSANm --query "id" -o tsv)/blobServices/default" `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' `
+  --metrics '[{"category":"Transaction","enabled":true}]'
 az monitor diagnostic-settings create `
-  --name $FunctionSAqueueDiag `
-  --resource ""$(az storage account show -g $RgNm -n $FunctionSANm --query ""id"" -o tsv)/queueServices/default"" `
-  --workspace $workspaceid `
-  --logs '[{""category"":""StorageRead"",""enabled"":true},{""category"":""StorageWrite"",""enabled"":true},{""category"":""StorageDelete"",""enabled"":true}]' `
-  --metrics '[{""category"":""Transaction"",""enabled"":true}]'
+  --name $FunctionSAqueueDiag `
+  --resource "$(az storage account show -g $RgNm -n $FunctionSANm --query "id" -o tsv)/queueServices/default" `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' `
+  --metrics '[{"category":"Transaction","enabled":true}]'
 az monitor diagnostic-settings create `
-  --name $FunctionSAtableDiag `
-  --resource ""$(az storage account show -g $RgNm -n $FunctionSANm --query ""id"" -o tsv)/tableServices/default"" `
-  --workspace $workspaceid `
-  --logs '[{""category"":""StorageRead"",""enabled"":true},{""category"":""StorageWrite"",""enabled"":true},{""category"":""StorageDelete"",""enabled"":true}]' `
-  --metrics '[{""category"":""Transaction"",""enabled"":true}]'
+  --name $FunctionSAtableDiag `
+  --resource "$(az storage account show -g $RgNm -n $FunctionSANm --query "id" -o tsv)/tableServices/default" `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' `
+  --metrics '[{"category":"Transaction","enabled":true}]'
 az monitor diagnostic-settings create `
-  --name $FunctionSAfileDiag `
-  --resource ""$(az storage account show -g $RgNm -n $FunctionSANm --query ""id"" -o tsv)/fileServices/default"" `
-  --workspace $workspaceid `
-  --logs '[{""category"":""StorageRead"",""enabled"":true},{""category"":""StorageWrite"",""enabled"":true},{""category"":""StorageDelete"",""enabled"":true}]' `
-  --metrics '[{""category"":""Transaction"",""enabled"":true}]'
+  --name $FunctionSAfileDiag `
+  --resource "$(az storage account show -g $RgNm -n $FunctionSANm --query "id" -o tsv)/fileServices/default" `
+  --workspace $workspaceid `
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' `
+  --metrics '[{"category":"Transaction","enabled":true}]'
+  

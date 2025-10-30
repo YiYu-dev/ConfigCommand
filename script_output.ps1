@@ -811,10 +811,6 @@ az network private-dns record-set a update `
   -z privatelink.azurewebsites.net `
   -n "$Wa.scm" `
   --set ttl=10
-$result=az webapp vnet-integration add --resource-group $RgNm `
-  --vnet $VNetNm `
-  --subnet $VNetIntegSubnetid `
-  --name "$Wa"
 az webapp vnet-integration list --name "$Wa" --resource-group "$RgNm"
 $Waid=$(az webapp list `
     --resource-group $RgNm `
@@ -849,10 +845,6 @@ az network private-dns record-set a update `
   -z privatelink.azurewebsites.net `
   -n "$Wa-stg.scm" `
   --set ttl=10
-$result=az webapp vnet-integration add --resource-group $RgNm `
-  --vnet $VNetNm `
-  --subnet $VNetIntegSubnetid `
-  --name "$Wa" --slot "stg"
 az webapp vnet-integration list --name "$Wa" --resource-group "$RgNm" --slot "stg"
 $Faid=$(az functionapp list `
     --resource-group $RgNm `

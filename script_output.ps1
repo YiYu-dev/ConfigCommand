@@ -183,10 +183,6 @@ az keyvault update `
   --name $KeyVaultNm `
   --resource-group $RgNm `
   --public-network-access Disabled
-az monitor app-insights component create `
-    --resource-group $RgNm `
-    --app $AppInsightsNm `
-    --location $location
 $appiconString = (az monitor app-insights component show --resource-group $RgNm --app $AppInsightsNm | convertFrom-Json).connectionString
 az webapp config appsettings set --name $Wa `
   --resource-group $RgNm `

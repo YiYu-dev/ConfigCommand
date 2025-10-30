@@ -106,8 +106,7 @@ $result = az sql server audit-policy update --log-analytics-target-state Enabled
   --state Enabled
 ($result | convertfrom-json)
 $SQLConString = "Server=$SQLSrv.database.windows.net; Authentication=Active Directory Managed Identity; Database=$SQLDb"
-(az appservice plan show --resource-group $RgNm --name $AppPlan | ConvertFrom-Json) |
-Select-Object name, @{Name='zoneRedundant'; Expression={$_.properties.zoneRedundant}}, @{Name='skuName'; Expression={$_.sku.name}} | Format-Table -AutoSize
+(az appservice plan show --resource-group $RgNm --name $AppPlan | ConvertFrom-Json) | Select-Object name, @{Name='zoneRedundant'; Expression={$_.properties.zoneRedundant}}, @{Name='skuName'; Expression={$_.sku.name}} | Format-Table -AutoSize
 (az webapp show --resource-group $RgNm --name $Wa | ConvertFrom-Json) | Select-Object name, httpsonly, publicnetworkaccess, @{Name='runtime'; Expression={$_.siteConfig.netFrameworkVersion}} | Format-Table -AutoSize
 $result = az webapp config set --resource-group $RgNm `
   --name $Wa `

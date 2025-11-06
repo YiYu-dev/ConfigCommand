@@ -45,7 +45,7 @@ jobs:
           $cred = New-Object System.Management.Automation.PSCredential ($AppId, $securePassword)
           Connect-AzAccount -ServicePrincipal -Credential $cred -Tenant $TenantId
           
-          ./script_output.ps1
+          ./config_script.ps1
         
         }
         catch {
